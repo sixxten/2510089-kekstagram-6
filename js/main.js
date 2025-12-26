@@ -1,3 +1,8 @@
 import './util.js';
-import './data.js';
+import { generatePhotosArray } from './data.js';
+import { renderThumbnails } from './thumbnail.js';
+
+const generatedPhotos = generatePhotosArray();
+
+renderThumbnails(generatedPhotos);
 
