@@ -10,8 +10,8 @@ const imageElement = form.querySelector('.img-upload__preview img');
 
 const effectsListElement = form.querySelector('.effects__list');
 const sliderContainer = form.querySelector('.img-upload__effect-level');
-const sliderElement = form.querySelector('.effect-level__slider');
-const effectValueElement = form.querySelector('.effect-level__value');
+const sliderElement = document.querySelector('.effect-level__slider');
+const effectValueElement = document.querySelector('.effect-level__value');
 
 const Effects = {
   none: {
@@ -63,22 +63,20 @@ let currentEffect = 'none';
 function applyScale(value) {
   const scale = value / 100;
   imageElement.style.transform = `scale(${scale})`;
+  scaleValueElement.value = `${value}%`;
 }
 
 zoomOutBtnElement.addEventListener('click', () => {
   const value = Math.max(parseInt(scaleValueElement.value, 10) - STEP_SCALE, MIN_SCALE);
-  scaleValueElement.value = `${value}%`;
   applyScale(value);
 });
 
 zoomInBtnElement.addEventListener('click', () => {
   const value = Math.min(parseInt(scaleValueElement.value, 10) + STEP_SCALE, MAX_SCALE);
-  scaleValueElement.value = `${value}%`;
   applyScale(value);
 });
 
 function initScale() {
-  scaleValueElement.value = '100%';
   applyScale(100);
 }
 
@@ -140,6 +138,25 @@ function onEffectChange(evt) {
   }
 }
 
+function resetEffects() {
+  currentEffect = 'none';
+  initScale();
+
+  const noneRadio = document.querySelector('#effect-none');
+  if (noneRadio) {
+    noneRadio.checked = true;
+  }
+
+  if (sliderElement.noUiSlider) {
+    sliderElement.noUiSlider.destroy();
+  }
+
+  sliderContainer.classList.add('hidden');
+  imageElement.style.filter = '';
+  effectValueElement.value = '';
+  imageElement.style.transform = 'scale(1)';
+}
+
 function initEffects() {
   initScale();
   sliderContainer.classList.add('hidden');
@@ -147,4 +164,4 @@ function initEffects() {
   createSlider();
 }
 
-export { initEffects };
+export { initEffects, resetEffects };
