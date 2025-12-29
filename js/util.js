@@ -5,8 +5,7 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.lenght - 1)];
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
 function createIdGenerator () {
   let lastGeneratedId = 0;
