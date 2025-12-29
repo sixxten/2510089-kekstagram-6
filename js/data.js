@@ -1,12 +1,14 @@
 import {getRandomArrayElement, getRandomInteger, createIdGenerator} from './util.js';
 
 
-const MESSAGES = [ 'Всё отлично!',
+const MESSAGES = [
+  'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
 
 const DESCRIPTIONS = [
   'Красивый закат на море.',
@@ -44,28 +46,39 @@ const NAMES = [
   'Павел',
 ];
 
-const commentGenerator = () => ({
-  id: createIdGenerator(),
-  avatar: `img/avatar-${getRandomInteger(1,6)}.svg`,
+const generateCommentId = createIdGenerator();
+const generatePhotoId = createIdGenerator();
+
+const createComment = () => ({
+  id: generateCommentId(),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES)
 });
 
+const createComments = () => Array.from(
+  { length: getRandomInteger(0, 30) },
+  createComment
+);
 
-const generateComments = Array.from({length: getRandomInteger(0,30)}, commentGenerator);
+const createPhoto = (photoNumber) => ({
+  id: generatePhotoId(),
+  url: `photos/${photoNumber}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomInteger(15, 200),
+  comments: createComments()
+});
 
+const generatePhotosArray = () => {
 
-const generatePhoto = () => {
-  const id = createIdGenerator();
-  return {
-    id: id,
-    url: `photos/${id}.jpg`,
-    description: getRandomArrayElement(DESCRIPTIONS),
-    likes: getRandomInteger(15,200),
-    comments: generateComments
-  };
+  const photoNumbers = Array.from({ length: 25 }, (_, i) => i + 1);
+
+  for (let i = photoNumbers.length - 1; i > 0; i--) {
+    const j = getRandomInteger(0, i);
+    [photoNumbers[i], photoNumbers[j]] = [photoNumbers[j], photoNumbers[i]];
+  }
+
+  return photoNumbers.map((number) => createPhoto(number));
 };
 
-const generatePhotosArray = Array.from({length: 25}, generatePhoto);
-
-export{generatePhotosArray};
+export { generatePhotosArray };
