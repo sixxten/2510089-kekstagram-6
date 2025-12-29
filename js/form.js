@@ -21,21 +21,7 @@ const validateForm = () => {
   submitButton.disabled = !isValid;
 };
 
-descriptionInput.addEventListener('input', validateForm);
-
-const openForm = () => {
-
-  uploadOverlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-
-  uploadCancel.addEventListener('click', closeForm);
-  document.addEventListener('keydown', onDocumentKeydown);
-
-  validateForm();
-};
-
 const closeForm = () => {
-
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
 
@@ -69,8 +55,6 @@ const onDocumentKeydown = (evt) => {
 };
 
 form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-
   const isValid = pristine.validate();
 
   if (!isValid) {
@@ -79,8 +63,6 @@ form.addEventListener('submit', (evt) => {
 
   submitButton.disabled = true;
   submitButton.textContent = 'Отправляется...';
-
 });
-
 
 export { openForm, closeForm };
