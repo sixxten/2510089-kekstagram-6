@@ -22,22 +22,6 @@ const validateForm = () => {
 };
 
 
-const closeForm = () => {
-
-  uploadOverlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-
-  uploadCancel.removeEventListener('click', closeForm);
-  document.removeEventListener('keydown', onDocumentKeydown);
-
-  form.reset();
-  pristine.reset();
-  uploadInput.value = '';
-
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
-};
-
 const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape' && !uploadOverlay.classList.contains('hidden')) {
     if (evt.target === form.querySelector('.text__hashtags') ||
@@ -51,7 +35,24 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const openForm = () => {
+
+function closeForm() {
+  uploadOverlay.classList.add('hidden');
+  body.classList.remove('modal-open');
+
+  uploadCancel.removeEventListener('click', closeForm);
+  document.removeEventListener('keydown', onDocumentKeydown);
+
+  form.reset();
+  pristine.reset();
+  uploadInput.value = '';
+
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+}
+
+
+function openForm() {
   uploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
 
@@ -59,7 +60,7 @@ const openForm = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 
   validateForm();
-};
+}
 
 descriptionInput.addEventListener('input', validateForm);
 
