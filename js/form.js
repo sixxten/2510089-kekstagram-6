@@ -21,7 +21,9 @@ const validateForm = () => {
   submitButton.disabled = !isValid;
 };
 
+
 const closeForm = () => {
+
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
 
@@ -33,13 +35,8 @@ const closeForm = () => {
   uploadInput.value = '';
 
   submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
 };
-
-uploadInput.addEventListener('change', () => {
-  if (uploadInput.files.length > 0) {
-    openForm();
-  }
-});
 
 const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape' && !uploadOverlay.classList.contains('hidden')) {
@@ -54,15 +51,37 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
+const openForm = () => {
+  uploadOverlay.classList.remove('hidden');
+  body.classList.add('modal-open');
+
+  uploadCancel.addEventListener('click', closeForm);
+  document.addEventListener('keydown', onDocumentKeydown);
+
+  validateForm();
+};
+
+descriptionInput.addEventListener('input', validateForm);
+
+uploadInput.addEventListener('change', () => {
+  if (uploadInput.files.length > 0) {
+    openForm();
+  }
+});
+
 form.addEventListener('submit', (evt) => {
+
   const isValid = pristine.validate();
 
   if (!isValid) {
+    evt.preventDefault();
     return;
   }
 
   submitButton.disabled = true;
   submitButton.textContent = 'Отправляется...';
+
 });
+
 
 export { openForm, closeForm };
