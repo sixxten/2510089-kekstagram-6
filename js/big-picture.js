@@ -130,3 +130,5 @@ bigPicture.addEventListener('click', (evt) => {
 document.addEventListener('keydown', onDocumentKeydown);
 
 export { openBigPicture };
+export { closeBigPicture };
+
