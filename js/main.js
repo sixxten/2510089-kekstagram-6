@@ -1,16 +1,29 @@
-import './util.js';
 import { renderThumbnails } from './thumbnail.js';
 import './hashtags-pristine.js';
 import './form.js';
 import { initEffects } from './effects.js';
 import { getDataFromServer } from './api.js';
+import { initFilters } from './filters.js';
 
 let photos = [];
 
+const clearThumbnails = () => {
+  const thumbnails = document.querySelectorAll('.picture');
+  thumbnails.forEach((thumbnail) => thumbnail.remove());
+};
+
+const renderFilteredPhotos = (filteredPhotos) => {
+  clearThumbnails();
+  renderThumbnails(filteredPhotos);
+};
+
 const onSuccess = (data) => {
   photos = data.slice();
-  renderThumbnails(photos);
-  document.querySelector('.img-filters').classList.remove('img-filters--inactive');
+
+  const filtersContainer = document.querySelector('.img-filters');
+  filtersContainer.classList.remove('img-filters--inactive');
+
+  initFilters(photos, renderFilteredPhotos);
 };
 
 const onFail = (errorMessage) => {
